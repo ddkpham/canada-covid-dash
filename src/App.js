@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import Canada from "@svg-maps/canada";
+import { SVGMap } from "react-svg-map";
+import "react-svg-map/lib/index.css";
+import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="map">
+        <SVGMap
+          map={Canada}
+          onLocationMouseOver={(e, v) =>
+            console.log(e.target.attributes.name, v)
+          }
+        />
+      </div>
     </div>
   );
 }
