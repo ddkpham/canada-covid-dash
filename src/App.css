@@ -40,7 +40,7 @@
 .map-chart-container {
   display: flex;
   justify-content: start;
-  margin-top: 20vh;
+  margin-top: 100px;
 }
 
 .map {
@@ -49,6 +49,7 @@
   width: 20vw;
   border: #282c34;
   overflow: visible;
+  background-color: #197278;
 }
 
 .chart {
