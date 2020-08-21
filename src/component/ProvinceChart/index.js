@@ -4,6 +4,9 @@ import { options, styles, startingData } from "./data";
 import NoDataCard from "./NoDataCard";
 import { baseURL } from "../../config/url";
 import DateFnsUtils from "@date-io/date-fns";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import "./index.scss";
 
 import {
   MuiPickersUtilsProvider,
@@ -11,6 +14,9 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 class ProvinceChart extends Component {
   constructor(props) {
     super(props);
@@ -19,6 +25,7 @@ class ProvinceChart extends Component {
       province: this.props.province,
       start: new Date("2020-04-15T21:11:54"), // start of dataset
       end: new Date(), // current date
+      snackbarOpen: false,
     };
   }
 
@@ -48,11 +55,23 @@ class ProvinceChart extends Component {
   }
 
   handleStartChange = (date) => {
-    this.setState({ start: date });
+    if (date > this.state.end) {
+      this.setState({ snackbarOpen: true });
+    } else {
+      this.setState({ start: date });
+    }
+  };
+
+  handleClose = () => {
+    this.setState({ snackbarOpen: false });
   };
 
   handleEndChange = (date) => {
-    this.setState({ end: date });
+    if (date < this.state.start) {
+      this.setState({ snackbarOpen: true });
+    } else {
+      this.setState({ end: date });
+    }
   };
 
   formatDate = (date) => {
@@ -134,34 +153,40 @@ class ProvinceChart extends Component {
   }
 
   render() {
-    const { data, start, end } = this.state;
+    const { data, start, end, snackbarOpen } = this.state;
     const { province } = this.props;
     const containsChartData = data.labels.length >= 1;
     return (
       <div style={styles.graphContainer}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <KeyboardDatePicker
-            margin="normal"
-            id="start-picker-dialog"
-            label="Start"
-            format="MM/dd/yyyy"
-            value={start}
-            onChange={this.handleStartChange}
-            KeyboardButtonProps={{
-              "aria-label": "change start date",
-            }}
-          />
-          <KeyboardDatePicker
-            margin="normal"
-            id="end-picker-dialog"
-            label="End"
-            format="MM/dd/yyyy"
-            value={end}
-            onChange={this.handleEndChange}
-            KeyboardButtonProps={{
-              "aria-label": "change end date",
-            }}
-          />
+          <div className="date-picker-container">
+            <KeyboardDatePicker
+              margin="normal"
+              id="start-picker-dialog"
+              label="Start"
+              format="MM/dd/yyyy"
+              minDate={new Date("2020-04-15T21:11:54")}
+              maxDate={new Date()}
+              value={start}
+              onChange={this.handleStartChange}
+              KeyboardButtonProps={{
+                "aria-label": "change start date",
+              }}
+            />
+            <KeyboardDatePicker
+              margin="normal"
+              id="end-picker-dialog"
+              label="End"
+              format="MM/dd/yyyy"
+              minDate={new Date("2020-04-15T21:11:54")}
+              maxDate={new Date()}
+              value={end}
+              onChange={this.handleEndChange}
+              KeyboardButtonProps={{
+                "aria-label": "change end date",
+              }}
+            />
+          </div>
         </MuiPickersUtilsProvider>
         {containsChartData ? (
           <LineChart
@@ -175,6 +200,15 @@ class ProvinceChart extends Component {
         ) : (
           <NoDataCard />
         )}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          <Alert onClose={this.handleClose} severity="error">
+            start and end dates are invalid! Please select a valid range.
+          </Alert>
+        </Snackbar>
       </div>
     );
   }
