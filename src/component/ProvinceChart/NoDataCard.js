@@ -41,7 +41,14 @@ export default function NoDataCard() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button
+          size="small"
+          onClick={() =>
+            (window.location.href = "https://yukon.ca/en/covid-19-information")
+          }
+        >
+          Learn More
+        </Button>
       </CardActions>
     </Card>
   );
