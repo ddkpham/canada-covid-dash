@@ -28,7 +28,7 @@ export default function MenuAppBar(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { goToHomePage: homePage } = props;
+  const { setProvice } = props;
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,10 +36,6 @@ export default function MenuAppBar(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const goToHomePage = () => {
-    homePage();
   };
 
   return (
@@ -51,7 +47,7 @@ export default function MenuAppBar(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            onClick={goToHomePage}
+            onClick={() => setProvice("canada")}
           >
             <Avatar alt="maple leaf" src={MapleLeaf} />
           </IconButton>

@@ -3,6 +3,13 @@ import { Line as LineChart } from "react-chartjs-2";
 import { options, styles, startingData } from "./data";
 import NoDataCard from "./NoDataCard";
 import { baseURL } from "../../config/url";
+import DateFnsUtils from "@date-io/date-fns";
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 class ProvinceChart extends Component {
   constructor(props) {
@@ -10,6 +17,8 @@ class ProvinceChart extends Component {
     this.state = {
       data: startingData,
       province: this.props.province,
+      start: new Date("2020-04-15T21:11:54"), // start of dataset
+      end: new Date(), // current date
     };
   }
 
@@ -18,18 +27,49 @@ class ProvinceChart extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.province === this.state.province &&
-      prevProps.province === this.props.province
-    ) {
-      return;
+    if (prevState && prevState.start && prevState.end) {
+      const pStart = prevState.start.toISOString();
+      const cStart = this.state.start.toISOString();
+      const pEnd = prevState.end.toISOString();
+      const cEnd = this.state.end.toISOString();
+      console.log("ProvinceChart -> componentDidUpdate -> pStart", pStart);
+      const startUnchanged = pStart === cStart;
+      const endUnchanged = pEnd === cEnd;
+      console.log(
+        "ProvinceChart -> componentDidUpdate -> startChanged",
+        startUnchanged
+      );
+
+      console.log(
+        "ProvinceChart -> componentDidUpdate -> endChange",
+        endUnchanged
+      );
+      if (startUnchanged && endUnchanged) {
+        return;
+      }
     }
-    this.updateProvinceDataSet();
+    await this.updateProvinceDataSet(); // updates data
   }
 
+  handleStartChange = (date) => {
+    this.setState({ start: date });
+  };
+
+  handleEndChange = (date) => {
+    this.setState({ end: date });
+  };
+
+  formatDate = (date) => {
+    return date.toISOString().split("T")[0] + "T00:00:00Z";
+  };
+
   updateProvinceDataSet = async () => {
+    const { start: startDate, end: endDate } = this.state;
+    const start = this.formatDate(startDate);
+    console.log("ProvinceChart -> updateProvinceDataSet -> start", start);
+    const end = this.formatDate(endDate);
     const { province } = this.props;
-    const url = `${baseURL}/country/canada?from=2020-04-17T00:00:00Z&to=2020-08-20T00:00:00Z`;
+    const url = `${baseURL}/country/canada?from=${start}&to=${end}`;
     const response = await fetch(url);
     console.log("LineChartExample -> updateProvinceDataSet -> url", url);
     const data = await response.json();
@@ -99,11 +139,35 @@ class ProvinceChart extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, start, end } = this.state;
     const { province } = this.props;
     const containsChartData = data.labels.length >= 1;
     return (
       <div style={styles.graphContainer}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
+            label="Start"
+            format="MM/dd/yyyy"
+            value={start}
+            onChange={this.handleStartChange}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          />
+          <KeyboardDatePicker
+            margin="normal"
+            id="date-picker-dialog"
+            label="End"
+            format="MM/dd/yyyy"
+            value={end}
+            onChange={this.handleEndChange}
+            KeyboardButtonProps={{
+              "aria-label": "change date",
+            }}
+          />
+        </MuiPickersUtilsProvider>
         {containsChartData ? (
           <LineChart
             type="line"

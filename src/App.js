@@ -10,13 +10,13 @@ import Typography from "@material-ui/core/Typography";
 import "./App.css";
 
 function App() {
-  const [province, setData] = useState("canada"); // default starts at canada
+  const [province, setProvice] = useState("canada"); // default starts at canada
   console.log("App -> province", province);
 
   const isCanadaView = province === "canada";
   return (
     <div className="App">
-      <AppBar />
+      <AppBar setProvice={setProvice} />
       <Typography variant="h3" color="primary" style={{ marginTop: "10px" }}>
         {province}
       </Typography>
@@ -32,7 +32,7 @@ function App() {
           )}
         </Card>
         <Card className="map">
-          <Map updateProvince={setData} />
+          <Map updateProvince={setProvice} />
         </Card>
       </Card>
     </div>
