@@ -26,26 +26,22 @@ class ProvinceChart extends Component {
     this.updateProvinceDataSet();
   }
 
+  areDatesEqual = (date1, date2) => {
+    return date1.toISOString() == date2.toISOString();
+  };
+
   async componentDidUpdate(prevProps, prevState) {
     if (prevState && prevState.start && prevState.end) {
-      const pStart = prevState.start.toISOString();
-      const cStart = this.state.start.toISOString();
-      const pEnd = prevState.end.toISOString();
-      const cEnd = this.state.end.toISOString();
-      console.log("ProvinceChart -> componentDidUpdate -> pStart", pStart);
-      const startUnchanged = pStart === cStart;
-      const endUnchanged = pEnd === cEnd;
-      console.log(
-        "ProvinceChart -> componentDidUpdate -> startChanged",
-        startUnchanged
+      const startUnchanged = this.areDatesEqual(
+        prevState.start,
+        this.state.start
       );
+      const endUnchanged = this.areDatesEqual(prevState.end, this.state.end);
 
-      console.log(
-        "ProvinceChart -> componentDidUpdate -> endChange",
-        endUnchanged
-      );
       if (startUnchanged && endUnchanged) {
-        return;
+        if (this.props.province === this.state.province) {
+          return;
+        }
       }
     }
     await this.updateProvinceDataSet(); // updates data
@@ -66,7 +62,6 @@ class ProvinceChart extends Component {
   updateProvinceDataSet = async () => {
     const { start: startDate, end: endDate } = this.state;
     const start = this.formatDate(startDate);
-    console.log("ProvinceChart -> updateProvinceDataSet -> start", start);
     const end = this.formatDate(endDate);
     const { province } = this.props;
     const url = `${baseURL}/country/canada?from=${start}&to=${end}`;
@@ -147,24 +142,24 @@ class ProvinceChart extends Component {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <KeyboardDatePicker
             margin="normal"
-            id="date-picker-dialog"
+            id="start-picker-dialog"
             label="Start"
             format="MM/dd/yyyy"
             value={start}
             onChange={this.handleStartChange}
             KeyboardButtonProps={{
-              "aria-label": "change date",
+              "aria-label": "change start date",
             }}
           />
           <KeyboardDatePicker
             margin="normal"
-            id="date-picker-dialog"
+            id="end-picker-dialog"
             label="End"
             format="MM/dd/yyyy"
             value={end}
             onChange={this.handleEndChange}
             KeyboardButtonProps={{
-              "aria-label": "change date",
+              "aria-label": "change end date",
             }}
           />
         </MuiPickersUtilsProvider>
