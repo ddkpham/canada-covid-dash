@@ -35,10 +35,6 @@ const RightPanel = (props) => {
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   console.log("RightPanel -> isLoaded", isLoaded);
-  // const [province, setProvince] = useState({
-  //   name: "British Columbia",
-  //   index: 0,
-  // });
   const { province } = props;
   console.log("RightPanel -> province", province);
   console.log("RightPanel -> data", data);
@@ -103,23 +99,7 @@ const RightPanel = (props) => {
 
   console.log("RightPanel -> provinceData", provinceData);
 
-  return (
-    <div className="right-panel-container">
-      <Card>
-        <Autocomplete
-          id="province-selector"
-          options={provinceOptions}
-          getOptionLabel={(option) => option.name}
-          style={{ width: 250, margin: 10 }}
-          renderInput={(params) => (
-            <TextField {...params} label="Province" variant="outlined" />
-          )}
-          onChange={(e, value) => console.log(value)}
-        />
-      </Card>
-      {infoCards}
-    </div>
-  );
+  return <div className="right-panel-container">{infoCards}</div>;
 };
 
 export default RightPanel;
