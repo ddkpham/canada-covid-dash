@@ -31,9 +31,7 @@ class LineChartExample extends Component {
     const { country } = this.props;
     const url = `${baseURL}/total/dayone/country/${country}`;
     const response = await fetch(url);
-    console.log("LineChartExample -> updateContryDataSets -> url", url);
     const data = await response.json();
-    console.log("LineChartExample -> updateContryDataSets -> data", data);
     const newData = this.generateDataSets(data);
     this.setState({ data: newData });
   };
@@ -86,11 +84,6 @@ class LineChartExample extends Component {
         return index == 0 ? rec : recoveredCasesData[nonZeroIndex];
       }
     });
-
-    console.log(
-      "LineChartExample -> generateDataSets -> recoveredCasesData",
-      recoveredCasesData
-    );
 
     const newLabels = data.map((record) => {
       const strippedDate = record.Date.split("T")[0];

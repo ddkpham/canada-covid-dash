@@ -34,10 +34,7 @@ const provinceOptions = provinces.map((p, i) => ({ name: p, index: i }));
 const RightPanel = (props) => {
   const [data, setData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  console.log("RightPanel -> isLoaded", isLoaded);
   const { province } = props;
-  console.log("RightPanel -> province", province);
-  console.log("RightPanel -> data", data);
 
   useEffect(() => {
     var today = new Date().toISOString();
@@ -49,11 +46,8 @@ const RightPanel = (props) => {
     today = today.split("T")[0] + "T00:00:00Z";
     yesterday = yesterday.split("T")[0] + "T00:00:00Z";
 
-    console.log("RightPanel -> yesterday", yesterday);
-    console.log("RightPanel -> today", today);
     async function getData() {
       var url = `${baseURL}/country/canada?from=${yesterday}&to=${today}`;
-      console.log("getData -> url", url);
       try {
         var response = await getCall(url);
         var payload = await response.json();
@@ -96,8 +90,6 @@ const RightPanel = (props) => {
       <DeathCard provinceData={provinceData} />
     </div>
   ) : null;
-
-  console.log("RightPanel -> provinceData", provinceData);
 
   return <div className="right-panel-container">{infoCards}</div>;
 };

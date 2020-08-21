@@ -11,7 +11,6 @@ import "./App.css";
 
 function App() {
   const [province, setProvice] = useState("canada"); // default starts at canada
-  console.log("App -> province", province);
 
   const isCanadaView = province === "canada";
   return (

@@ -31,6 +31,7 @@ class ProvinceChart extends Component {
 
   async componentDidMount() {
     this.updateProvinceDataSet();
+    console.log("ProvinceChart -> componentDidMount");
   }
 
   areDatesEqual = (date1, date2) => {
@@ -38,15 +39,18 @@ class ProvinceChart extends Component {
   };
 
   async componentDidUpdate(prevProps, prevState) {
+    const { end, start, province } = this.state;
+    console.log(
+      "ProvinceChart -> componentDidUpdate -> province",
+      prevProps.province.length,
+      this.props.province.length
+    );
     if (prevState && prevState.start && prevState.end) {
-      const startUnchanged = this.areDatesEqual(
-        prevState.start,
-        this.state.start
-      );
-      const endUnchanged = this.areDatesEqual(prevState.end, this.state.end);
+      const startUnchanged = this.areDatesEqual(prevState.start, start);
+      const endUnchanged = this.areDatesEqual(prevState.end, end);
 
       if (startUnchanged && endUnchanged) {
-        if (this.props.province === this.state.province) {
+        if (this.props.province === prevProps.province) {
           return;
         }
       }
