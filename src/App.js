@@ -23,18 +23,18 @@ function App() {
       <div className="home-side-panel">
         <LeftPanel province={province} />
       </div>
-      <Card className="map-chart-container">
-        <Card className="chart">
+      <div className="map-chart-container">
+        <div className="chart">
           {isCanadaView ? (
             <CanadaChart country="canada" />
           ) : (
             <ProvinceChart province={province} />
           )}
-        </Card>
+        </div>
         <Card className="map">
           <Map updateProvince={setProvice} />
         </Card>
-      </Card>
+      </div>
     </div>
   );
 }
