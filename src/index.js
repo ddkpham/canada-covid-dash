@@ -4,13 +4,17 @@ import "./index.css";
 import App from "./App";
 import theme from "../src/styles/theme";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { StylesProvider } from "@material-ui/core/styles";
+
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </StylesProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

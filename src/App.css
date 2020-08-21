@@ -37,6 +37,27 @@
   }
 }
 
+.map-chart-container {
+  display: flex;
+  justify-content: start;
+  margin-top: 20vh;
+}
+
 .map {
+  position: relative;
+  margin-left: 40vw;
   width: 20vw;
+  border: #282c34;
+  overflow: visible;
+}
+
+.chart {
+  width: 40vw;
+  overflow: visible;
+}
+
+/* styling to line chart */
+
+.chartjs-render-monitor {
+  width: 50vw !important;
 }

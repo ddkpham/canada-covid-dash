@@ -80,6 +80,8 @@ const styles = {
   graphContainer: {
     border: "1px solid black",
     padding: "15px",
+    width: "60vw",
+    marginLeft: "25vw",
   },
 };
 

@@ -1,5 +1,4 @@
-import React from "react";
-import { h, Component } from "preact";
+import React, { Component } from "react";
 import { Line as LineChart } from "react-chartjs-2";
 import { options, styles, startingData } from "./data";
 import NoDataCard from "./NoDataCard";
@@ -125,7 +124,8 @@ class LineChartExample extends Component {
     return newData;
   }
 
-  render({}, { data }) {
+  render() {
+    const { data } = this.state;
     const containsChartData = data.labels.length >= 1;
     return (
       <div style={styles.graphContainer}>

@@ -1,23 +1,30 @@
-import React from "react";
-import logo from "./logo.svg";
-import Canada from "@svg-maps/canada";
-import { SVGMap } from "react-svg-map";
-import "react-svg-map/lib/index.css";
+import React, { useState } from "react";
 import AppBar from "./component/MenuAppBar";
+import LeftPanel from "./component/LeftPanel";
+import Card from "@material-ui/core/Card";
+import Map from "./component/Map";
+import Chart from "./component/Chart";
+
 import "./App.css";
 
 function App() {
+  const [province, setData] = useState("canada"); // default starts at canada
+  console.log("App -> province", province);
+
   return (
     <div className="App">
       <AppBar />
-      <div className="map">
-        <SVGMap
-          map={Canada}
-          onLocationMouseOver={(e, v) =>
-            console.log(e.target.attributes.name, v)
-          }
-        />
+      <div className="home-side-panel">
+        <LeftPanel province={province} />
       </div>
+      <Card className="map-chart-container">
+        <Card className="chart">
+          <Chart country={"canada"} />
+        </Card>
+        <Card className="map">
+          <Map updateProvince={setData} />
+        </Card>
+      </Card>
     </div>
   );
 }
