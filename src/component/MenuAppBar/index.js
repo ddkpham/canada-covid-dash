@@ -80,8 +80,12 @@ export default function MenuAppBar(props) {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>
+                Portfolio: www.ddkpham.com
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                Email: ddkpham@gmail.com
+              </MenuItem>
             </Menu>
           </div>
         </Toolbar>
